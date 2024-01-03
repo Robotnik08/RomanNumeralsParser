@@ -6,6 +6,8 @@ It's actually pretty fun to make, and a nice little challenge. <br>
 
 It currently supports all valid Roman Numerals and even has support for Numerals above 3999 (the four in a row rule is removed for M)<br>
 
+More info about Roman numerals can be found [here](https://en.wikipedia.org/wiki/Roman_numerals) <br>
+
 Feel free to use and learn from this program!
 
 ## Usage
