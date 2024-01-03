@@ -104,8 +104,17 @@ int getRomanValue(char* symbol) {
 
 int main (int argc, char** argv) {
     int val = 0;
-
-    if (argc == 2) {
+    if (argc == 3) {
+        if (strcmp(argv[2], "-s") == 0 || strcmp(argv[2], "--silent") == 0) {
+            printf ("%d", getRomanValue(argv[1])); // print only the value
+            return 0;
+        } else if (strcmp(argv[2], "-c") == 0 || strcmp(argv[2], "--code") == 0) {
+            return getRomanValue(argv[1]); // return the value
+        } else {
+            printf ("Invalid arguments\n");
+            return 0;
+        }
+    } else if (argc == 2) {
         printf ("Input: %s\n", argv[1]);
         val = getRomanValue(argv[1]);
     } else if (argc == 1) {
