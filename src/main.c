@@ -5,8 +5,18 @@
 #define INVALID -1
 #define MAX_INPUT 100
 
-// isEven macro
+// macro functions
 #define isEven(x) (x % 2 == 0)
+#define isNum(x) (x >= '0' && x <= '9')
+
+int isNumber (char* str) {
+    for (int i = 0; i < strlen(str); i++) {
+        if (!isNum(str[i])) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 // simple pair struct
 typedef struct {
@@ -102,11 +112,83 @@ int getRomanValue(char* symbol) {
     return val;
 }
 
+char* intToRoman (int num) {
+    char* roman = malloc(sizeof(char) * 1);
+    roman[0] = '\0';
+
+    if (num <= 0) {
+        roman = realloc(roman, sizeof(char) * (strlen(roman) + 15));
+        strcat(roman, "Invalid number");
+        return roman;
+    } 
+    while (num > 0) {
+        if (num >= 1000) {
+            roman = realloc(roman, sizeof(char) * (strlen(roman) + 2));
+            strcat(roman, "M");
+            num -= 1000;
+        } else if (num >= 900) {
+            roman = realloc(roman, sizeof(char) * (strlen(roman) + 3));
+            strcat(roman, "CM");
+            num -= 900;
+        } else if (num >= 500) {
+            roman = realloc(roman, sizeof(char) * (strlen(roman) + 2));
+            strcat(roman, "D");
+            num -= 500;
+        } else if (num >= 400) {
+            roman = realloc(roman, sizeof(char) * (strlen(roman) + 3));
+            strcat(roman, "CD");
+            num -= 400;
+        } else if (num >= 100) {
+            roman = realloc(roman, sizeof(char) * (strlen(roman) + 2));
+            strcat(roman, "C");
+            num -= 100;
+        } else if (num >= 90) {
+            roman = realloc(roman, sizeof(char) * (strlen(roman) + 3));
+            strcat(roman, "XC");
+            num -= 90;
+        } else if (num >= 50) {
+            roman = realloc(roman, sizeof(char) * (strlen(roman) + 2));
+            strcat(roman, "L");
+            num -= 50;
+        } else if (num >= 40) {
+            roman = realloc(roman, sizeof(char) * (strlen(roman) + 3));
+            strcat(roman, "XL");
+            num -= 40;
+        } else if (num >= 10) {
+            roman = realloc(roman, sizeof(char) * (strlen(roman) + 2));
+            strcat(roman, "X");
+            num -= 10;
+        } else if (num >= 9) {
+            roman = realloc(roman, sizeof(char) * (strlen(roman) + 3));
+            strcat(roman, "IX");
+            num -= 9;
+        } else if (num >= 5) {
+            roman = realloc(roman, sizeof(char) * (strlen(roman) + 2));
+            strcat(roman, "V");
+            num -= 5;
+        } else if (num >= 4) {
+            roman = realloc(roman, sizeof(char) * (strlen(roman) + 3));
+            strcat(roman, "IV");
+            num -= 4;
+        } else if (num >= 1) {
+            roman = realloc(roman, sizeof(char) * (strlen(roman) + 2));
+            strcat(roman, "I");
+            num -= 1;
+        }
+    }
+    return roman;
+}
+
 int main (int argc, char** argv) {
     int val = 0;
+    char* roman = NULL;
     if (argc == 3) {
         if (strcmp(argv[2], "-s") == 0 || strcmp(argv[2], "--silent") == 0) {
-            printf ("%d", getRomanValue(argv[1])); // print only the value
+            if (isNumber(argv[1])) {
+                printf ("%s", intToRoman(atoi(argv[1]))); // print only the value
+            } else {
+                printf ("%d", getRomanValue(argv[1])); // print only the value
+            }
             return 0;
         } else if (strcmp(argv[2], "-c") == 0 || strcmp(argv[2], "--code") == 0) {
             return getRomanValue(argv[1]); // return the value
@@ -116,14 +198,23 @@ int main (int argc, char** argv) {
         }
     } else if (argc == 2) {
         printf ("Input: %s\n", argv[1]);
-        val = getRomanValue(argv[1]);
+
+        if (isNumber(argv[1])) {
+            roman = intToRoman(atoi(argv[1]));
+        } else {
+            val = getRomanValue(argv[1]);
+        }
     } else if (argc == 1) {
         char input[MAX_INPUT];
         printf ("Input: ");
         scanf ("%s", input);
         input[MAX_INPUT - 1] = '\0'; // stop overflow
 
-        val = getRomanValue(input);
+        if (isNumber(input)) {
+            roman = intToRoman(atoi(input));
+        } else {
+            val = getRomanValue(input);
+        }
     } else {
         printf ("Invalid arguments\n");
         return 0;
@@ -131,6 +222,9 @@ int main (int argc, char** argv) {
 
     if (val == INVALID) {
         printf ("Invalid roman numeral\n");
+    } else if (roman != NULL) {
+        printf ("Output: %s\n", roman);
+        free (roman);
     } else {
         printf ("Output: %d\n", val);
     }

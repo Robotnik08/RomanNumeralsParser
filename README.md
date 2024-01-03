@@ -16,6 +16,8 @@ When no arguments are given you are prompted to input a value right there in you
 
 You can also input the Numeral in the first argument, it will parse it for you. <br>
 
+You can also input a regular integer, it will convert it to a Roman Numeral. <br>
+
 Example Usage:<br>
 
 ```
